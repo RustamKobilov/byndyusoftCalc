@@ -1,0 +1,33 @@
+<html>
+<head>
+  <title>Калькулятор</title>
+</head>
+<body>
+<h1>Калькулятор</h1>
+<form action="/calculator/calculate" method="post">
+  <label for="expression">Выражение:</label>
+  <input type="text" id="expression" name="expression" />
+  <button type="submit">Рассчитать</button>
+</form>
+<div id="result"></div>
+<script>
+  document.querySelector('form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const expression = document.getElementById('expression').value;
+    const response = await fetch('/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ expression })
+    });
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
+      document.getElementById('result').textContent = 'Результат: ' + data.value;
+    }
+  });
+</script>
+</body>
+</html>
